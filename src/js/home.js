@@ -90,7 +90,7 @@ fetch('https://randomuser.me/api/')
         return data;
     }
     const actionList = await getData('https://yts.am/api/v2/list_movies.json?genre=action');
-    const terrorList= await getData('https://yts.am/api/v2/list_movies.json?genre=terror');
+    const dramaList= await getData('https://yts.am/api/v2/list_movies.json?genre=drama');
     const animationList= await getData('https://yts.am/api/v2/list_movies.json?genre=animation')
     /*let terrorList;
     getData('https://yts.am/api/v2/list_movies.json?genre=terror')
@@ -100,4 +100,24 @@ fetch('https://randomuser.me/api/')
         })*/
     console.log (actionList, terrorList, animationList);
     console.log('actionList', actionList);
+
+    //const $home = $('.home .list #item');
+    //const $home = $('.home');
+    //const $home = document.getElementById('modal');
+    //const $home = document.getElementsByClassName('modal');
+    //const $home = document.getElementsByTagName('modal');
+    const $actionContainer = document.querySelector('#action');
+    const $dramaContainer = document.querySelector('#frama');
+    const $animationContainer = document.querySelector('#animation');
+    const $featuringContainer = document.querySelector('#featuring');
+    const $form = document.querySelector('#form');
+    const $home = document.querySelector('#home');
+
+    const $modal = document.getElementById('modal');
+    const $overlay = document.getElementById('overlay');
+    const $hideModal = document.getElementById('hide-modal');
+
+    const $modalTitle = $modal.querySelector('h1');
+    const $modalImage = $modal.querySelector('img');
+    const $modalImage = $modal.querySelector('p');
 })()
