@@ -7,7 +7,7 @@ function cambiarNombre(nuevoNombre) {
   cambia = nuevoNombre
 }
 
-const getUserAll= new Promise(function(todoBien, todoMal){
+/*const getUserAll= new Promise(function(todoBien, todoMal){
     //setInterval
     //setTimeout
     setTimeout(function(){
@@ -35,7 +35,7 @@ const getUser= new Promise(function(todoBien, todoMal){
     })
     .catch(function(message){
         console.log(message);
-    })*/
+    })
 
 Promise.all([
     getUser, getUserAll
@@ -55,4 +55,26 @@ Promise.race([
 })
 .catch(function(message){
     console.log(message);
-})
+})*/
+
+/*$.ajax('https://randomuser.me/api/', {
+    method: 'GET',
+    success: function(data){
+        console.log(data);
+    },
+    error: function(error){
+        console.log(error);
+    }
+})*/
+
+fetch('https://randomuser.me/api/')
+    .then(function(response){
+        //console.log(response);
+        return response.json();
+    })
+    .then(function(user){
+        console.log('user', user.results[0].name.first);
+    })
+    .catch(function(){
+        console.log('algo fallo');
+    })
