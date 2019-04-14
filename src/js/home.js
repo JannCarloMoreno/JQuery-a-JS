@@ -107,10 +107,17 @@ fetch('https://randomuser.me/api/')
     }
     //console.log(videoItemTemplate('src/images/covers/bitcoin.jpg','bitcoin'));
 
+    const $actionContainer = document.querySelector('#action');
+
     actionList.data.movies.forEach((movie)=>{
         //debugger
         const HTMLString=videoItemTemplate(movie);
-        console.log(HTMLString);
+        //const html= document.implementation.createHTMLDocument();
+        const html= document.implementation.createHTMLDocument();
+        html.body.innerHTML = HTMLString;
+        //debugger
+        $actionContainer.append(html.body.children[0]);
+        //console.log(HTMLString);
     } )
     /*let terrorList;
     getData('https://yts.am/api/v2/list_movies.json?genre=terror')
@@ -126,9 +133,31 @@ fetch('https://randomuser.me/api/')
     //const $home = document.getElementById('modal');
     //const $home = document.getElementsByClassName('modal');
     //const $home = document.getElementsByTagName('modal');
-    const $actionContainer = document.querySelector('#action');
-    const $dramaContainer = document.querySelector('#frama');
+    const $dramaContainer = document.querySelector('#drama');
+    //proff for drama list
+    dramaList.data.movies.forEach((movie)=>{
+        //debugger
+        const HTMLString=videoItemTemplate(movie);
+        //const html= document.implementation.createHTMLDocument();
+        const html= document.implementation.createHTMLDocument();
+        html.body.innerHTML = HTMLString;
+        //debugger
+        $dramaContainer.append(html.body.children[0]);
+        //console.log(HTMLString);
+    } )
     const $animationContainer = document.querySelector('#animation');
+
+    //proff for animation list
+    animationList.data.movies.forEach((movie)=>{
+        //debugger
+        const HTMLString=videoItemTemplate(movie);
+        //const html= document.implementation.createHTMLDocument();
+        const html= document.implementation.createHTMLDocument();
+        html.body.innerHTML = HTMLString;
+        //debugger
+        $animationContainer.append(html.body.children[0]);
+        //console.log(HTMLString);
+    } )
     const $featuringContainer = document.querySelector('#featuring');
     const $form = document.querySelector('#form');
     const $home = document.querySelector('#home');
