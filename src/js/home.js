@@ -107,57 +107,54 @@ fetch('https://randomuser.me/api/')
     }
     //console.log(videoItemTemplate('src/images/covers/bitcoin.jpg','bitcoin'));
 
-    const $actionContainer = document.querySelector('#action');
-
-    actionList.data.movies.forEach((movie)=>{
-        //debugger
-        const HTMLString=videoItemTemplate(movie);
-        //const html= document.implementation.createHTMLDocument();
+    function createTemplate(HTMLString){
         const html= document.implementation.createHTMLDocument();
         html.body.innerHTML = HTMLString;
-        //debugger
-        $actionContainer.append(html.body.children[0]);
-        //console.log(HTMLString);
+        return html.body.children[0];
+    }
+
+
+    function renderMovieList(list, $container){
+        //actionList.data.movies
+
+        $container.children[0].remove();
+        list.forEach((movie)=>{
+
+        const HTMLString = videoItemTemplate(movie);
+        const movieElement= createTemplate(HTMLString);
+        //$actionContainer
+        $container.append(movieElement);
     } )
+    }
+
+
     /*let terrorList;
     getData('https://yts.am/api/v2/list_movies.json?genre=terror')
         .then(function(data){
             console.log('terrorList',data);
             terrorList=data;
         })*/
-    console.log (actionList, dramaList, animationList);
-    console.log('actionList', actionList);
+    //console.log (actionList, dramaList, animationList);
+    //console.log('actionList', actionList);
 
     //const $home = $('.home .list #item');
     //const $home = $('.home');
     //const $home = document.getElementById('modal');
     //const $home = document.getElementsByClassName('modal');
     //const $home = document.getElementsByTagName('modal');
+
+    const $actionContainer = document.querySelector('#action');
+
+    renderMovieList(actionList.data.movies, $actionContainer);
+
     const $dramaContainer = document.querySelector('#drama');
-    //proff for drama list
-    dramaList.data.movies.forEach((movie)=>{
-        //debugger
-        const HTMLString=videoItemTemplate(movie);
-        //const html= document.implementation.createHTMLDocument();
-        const html= document.implementation.createHTMLDocument();
-        html.body.innerHTML = HTMLString;
-        //debugger
-        $dramaContainer.append(html.body.children[0]);
-        //console.log(HTMLString);
-    } )
+
+    renderMovieList(dramaList.data.movies, $dramaContainer);
+
     const $animationContainer = document.querySelector('#animation');
 
-    //proff for animation list
-    animationList.data.movies.forEach((movie)=>{
-        //debugger
-        const HTMLString=videoItemTemplate(movie);
-        //const html= document.implementation.createHTMLDocument();
-        const html= document.implementation.createHTMLDocument();
-        html.body.innerHTML = HTMLString;
-        //debugger
-        $animationContainer.append(html.body.children[0]);
-        //console.log(HTMLString);
-    } )
+    renderMovieList(animationList.data.movies, $animationContainer);
+
     const $featuringContainer = document.querySelector('#featuring');
     const $form = document.querySelector('#form');
     const $home = document.querySelector('#home');
