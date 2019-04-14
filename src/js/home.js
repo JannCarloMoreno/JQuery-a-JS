@@ -92,13 +92,33 @@ fetch('https://randomuser.me/api/')
     const actionList = await getData('https://yts.am/api/v2/list_movies.json?genre=action');
     const dramaList= await getData('https://yts.am/api/v2/list_movies.json?genre=drama');
     const animationList= await getData('https://yts.am/api/v2/list_movies.json?genre=animation')
+
+    function videoItemTemplate(movie){
+        return (
+            `<div class="primaryPlaylistItem">
+                <div class="primaryPlaylistItem-image">
+                    <img src="${movie.medium_cover_image}">
+                </div>
+                <h4 class="primaryPlaylistItem-title">
+                    ${movie.title}
+                </h4>
+            </div>`
+        )
+    }
+    //console.log(videoItemTemplate('src/images/covers/bitcoin.jpg','bitcoin'));
+
+    actionList.data.movies.forEach((movie)=>{
+        //debugger
+        const HTMLString=videoItemTemplate(movie);
+        console.log(HTMLString);
+    } )
     /*let terrorList;
     getData('https://yts.am/api/v2/list_movies.json?genre=terror')
         .then(function(data){
             console.log('terrorList',data);
             terrorList=data;
         })*/
-    console.log (actionList, terrorList, animationList);
+    console.log (actionList, dramaList, animationList);
     console.log('actionList', actionList);
 
     //const $home = $('.home .list #item');
@@ -119,5 +139,9 @@ fetch('https://randomuser.me/api/')
 
     const $modalTitle = $modal.querySelector('h1');
     const $modalImage = $modal.querySelector('img');
-    const $modalImage = $modal.querySelector('p');
+    const $modalDescription = $modal.querySelector('p');
+
+
+
+
 })()
