@@ -91,10 +91,11 @@ fetch('https://randomuser.me/api/')
     }
 
     const $form = document.querySelector('form');
+    const $home = document.getElementById('home');
 
     $form.addEventListener('submit', (event) => {
-        debugger
         event.preventDefault();
+        $home.classList.add('search-active');
     })
     const actionList = await getData('https://yts.am/api/v2/list_movies.json?genre=action');
     const dramaList= await getData('https://yts.am/api/v2/list_movies.json?genre=drama');
@@ -122,7 +123,7 @@ fetch('https://randomuser.me/api/')
 
     function addEventClick($element){
         $element.addEventListener('click', ()=> {
-            alert('click');
+            showModal()
         })
         //$('div').on("click", function(){}) JQuery sintax
     }
@@ -172,7 +173,7 @@ fetch('https://randomuser.me/api/')
 
 
 
-    const $home = document.querySelector('#home');
+
 
     const $modal = document.getElementById('modal');
     const $overlay = document.getElementById('overlay');
@@ -183,6 +184,13 @@ fetch('https://randomuser.me/api/')
     const $modalDescription = $modal.querySelector('p');
 
 
-
-
+    function showModal(){
+        $overlay.classList.add('active');
+        $modal.style.animation= 'modalIn .8s forwards';
+    }
+    function hideModal(){
+        $overlay.classList.remove('active');
+        $modal.style.animation= 'modalOut .8s forwards';
+    }
+    $hideModal.addEventListener('click', hideModal);
 })()
