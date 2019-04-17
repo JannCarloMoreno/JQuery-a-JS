@@ -7,69 +7,9 @@ function cambiarNombre(nuevoNombre) {
   cambia = nuevoNombre
 }
 
-/*const getUserAll= new Promise(function(todoBien, todoMal){
-    //setInterval
-    //setTimeout
-    setTimeout(function(){
-        //luego de 3 segundos
-        //todoBien();
-        todoBien("se acabo el tiempo");
-    }, 5000);
-    //todoBien();
-})
-
-const getUser= new Promise(function(todoBien, todoMal){
-    //setInterval
-    //setTimeout
-    setTimeout(function(){
-        //luego de 3 segundos
-        //todoBien();
-        todoBien("se acabo el tiempo 3");
-    }, 3000);
-    //todoBien();
-})
-
-/*getUser
-    .then(function(){
-        console.log("todo esta bien en la vida");
-    })
-    .catch(function(message){
-        console.log(message);
-    })
-
-Promise.all([
-    getUser, getUserAll
-])
-.then(function(message){
-    console.log(message);
-})
-.catch(function(message){
-    console.log(message);
-})
-
-Promise.race([
-    getUser, getUserAll
-])
-.then(function(message){
-    console.log(message);
-})
-.catch(function(message){
-    console.log(message);
-})*/
-
-/*$.ajax('https://randomuser.me/api/', {
-    method: 'GET',
-    success: function(data){
-        console.log(data);
-    },
-    error: function(error){
-        console.log(error);
-    }
-})*/
 
 fetch('https://randomuser.me/api/')
     .then(function(response){
-        //console.log(response);
         return response.json();
     })
     .then(function(user){
@@ -80,10 +20,6 @@ fetch('https://randomuser.me/api/')
     });
 
 (async function load(){
-    //await
-    //action
-    //terror
-    //animation
     async function getData(url){
         const response = await fetch(url);
         const data= await response.json();
@@ -99,7 +35,25 @@ fetch('https://randomuser.me/api/')
             $element.setAttribute(attr, setAttributes[attr]);
         }
     }
-    $form.addEventListener('submit', (event) => {
+
+    const BASE_API = 'https://yts.am/api/v2/';
+
+    function featuringTemplate(peli){
+        return(
+            `
+        <div class="featuring">
+        <div class="featuring-image">
+          <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
+        </div>
+        <div class="featuring-content">
+          <p class="featuring-title">Pelicula encontrada</p>
+          <p class="featuring-album">${peli.title}</p>
+        </div>
+        `
+        )
+    }
+
+    $form.addEventListener('submit', async (event) => {
         event.preventDefault();
         $home.classList.add('search-active');
         const $loader =  document.createElement('img');
@@ -109,15 +63,15 @@ fetch('https://randomuser.me/api/')
             width: '50px'
         })
         $featuringContainer.append($loader);
-        //debugger
-        //$('selector').attr({
-          //  src: 'value',
-            //width: 'value',
-        //}) JQuery syntax
+
+        const data= new FormData($form);
+        const peli= await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
+        const HTMLString= featuringTemplate(peli.data.movies[0]);
+        $featuringContainer.innerHTML=HTMLString;
     })
-    const actionList = await getData('https://yts.am/api/v2/list_movies.json?genre=action');
-    const dramaList= await getData('https://yts.am/api/v2/list_movies.json?genre=drama');
-    const animationList= await getData('https://yts.am/api/v2/list_movies.json?genre=animation')
+    const actionList = await getData(`${BASE_API}list_movies.json?genre=action`);
+    const dramaList= await getData(`${BASE_API}list_movies.json?genre=drama`);
+    const animationList= await getData(`${BASE_API}list_movies.json?genre=animation`)
 
     function videoItemTemplate(movie){
         return (
@@ -131,7 +85,6 @@ fetch('https://randomuser.me/api/')
             </div>`
         )
     }
-    //console.log(videoItemTemplate('src/images/covers/bitcoin.jpg','bitcoin'));
 
     function createTemplate(HTMLString){
         const html= document.implementation.createHTMLDocument();
@@ -143,37 +96,20 @@ fetch('https://randomuser.me/api/')
         $element.addEventListener('click', ()=> {
             showModal()
         })
-        //$('div').on("click", function(){}) JQuery sintax
     }
     function renderMovieList(list, $container){
-        //actionList.data.movies
 
         $container.children[0].remove();
         list.forEach((movie)=>{
 
         const HTMLString = videoItemTemplate(movie);
         const movieElement= createTemplate(HTMLString);
-        //$actionContainer
+
         $container.append(movieElement);
         addEventClick(movieElement);
     } )
     }
 
-
-    /*let terrorList;
-    getData('https://yts.am/api/v2/list_movies.json?genre=terror')
-        .then(function(data){
-            console.log('terrorList',data);
-            terrorList=data;
-        })*/
-    //console.log (actionList, dramaList, animationList);
-    //console.log('actionList', actionList);
-
-    //const $home = $('.home .list #item');
-    //const $home = $('.home');
-    //const $home = document.getElementById('modal');
-    //const $home = document.getElementsByClassName('modal');
-    //const $home = document.getElementsByTagName('modal');
 
     const $actionContainer = document.querySelector('#action');
 
