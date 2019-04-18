@@ -49,6 +49,8 @@ fetch('https://randomuser.me/api/')
     const friendList= await getFriend(`${FRIEND_API}`);
     const $friendsContainer = document.querySelector('.playlistFriends');
     renderFriendList(friendList.results, $friendsContainer);
+
+    //fin reto
     async function getData(url){
             const response = await fetch(url);
             const data= await response.json();
@@ -156,17 +158,17 @@ fetch('https://randomuser.me/api/')
     } )
     }
     const {data:{movies: actionList}}= await getData(`${BASE_API}list_movies.json?genre=action`);
-
+    window.localStorage.setItem('actionList', JSON.stringify(actionList));
     const $actionContainer = document.querySelector('#action');
     renderMovieList(actionList, $actionContainer, 'action');
 
     const {data:{movies: dramaList}}= await getData(`${BASE_API}list_movies.json?genre=drama`);
-
+    window.localStorage.setItem('dramaList', JSON.stringify(dramaList));
     const $dramaContainer = document.querySelector('#drama');
     renderMovieList(dramaList, $dramaContainer, 'drama');
 
     const {data:{movies: animationList}}= await getData(`${BASE_API}list_movies.json?genre=animation`)
-
+    window.localStorage.setItem('animationList', JSON.stringify(animationList));
     const $animationContainer = document.querySelector('#animation');
     renderMovieList(animationList, $animationContainer, 'animation');
 
