@@ -78,9 +78,9 @@ fetch('https://randomuser.me/api/')
     const dramaList= await getData(`${BASE_API}list_movies.json?genre=drama`);
     const animationList= await getData(`${BASE_API}list_movies.json?genre=animation`)
 
-    function videoItemTemplate(movie){
+    function videoItemTemplate(movie, category){
         return (
-            `<div class="primaryPlaylistItem">
+            `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
                 <div class="primaryPlaylistItem-image">
                     <img src="${movie.medium_cover_image}">
                 </div>
@@ -99,15 +99,15 @@ fetch('https://randomuser.me/api/')
 
     function addEventClick($element){
         $element.addEventListener('click', ()=> {
-            showModal()
+            showModal($element)
         })
     }
-    function renderMovieList(list, $container){
+    function renderMovieList(list, $container, category){
 
         $container.children[0].remove();
         list.forEach((movie)=>{
 
-        const HTMLString = videoItemTemplate(movie);
+        const HTMLString = videoItemTemplate(movie, category );
         const movieElement= createTemplate(HTMLString);
 
         $container.append(movieElement);
@@ -118,15 +118,15 @@ fetch('https://randomuser.me/api/')
 
     const $actionContainer = document.querySelector('#action');
 
-    renderMovieList(actionList.data.movies, $actionContainer);
+    renderMovieList(actionList.data.movies, $actionContainer, 'action');
 
     const $dramaContainer = document.querySelector('#drama');
 
-    renderMovieList(dramaList.data.movies, $dramaContainer);
+    renderMovieList(dramaList.data.movies, $dramaContainer, 'drama');
 
     const $animationContainer = document.querySelector('#animation');
 
-    renderMovieList(animationList.data.movies, $animationContainer);
+    renderMovieList(animationList.data.movies, $animationContainer, 'animation');
 
 
 
@@ -143,9 +143,13 @@ fetch('https://randomuser.me/api/')
     const $modalDescription = $modal.querySelector('p');
 
 
-    function showModal(){
+    function showModal($element){
+
         $overlay.classList.add('active');
         $modal.style.animation= 'modalIn .8s forwards';
+        const id= parseInt($element.dataset.id);
+        const category= $element.dataset.category;
+        //element.getAttribute('data-id') la otra forma de hacerlo.
     }
     function hideModal(){
         $overlay.classList.remove('active');
