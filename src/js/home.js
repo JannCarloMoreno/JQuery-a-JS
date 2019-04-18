@@ -1,12 +1,3 @@
-console.log('hola mundo!');
-const noCambia = "Leonidas";
-
-let cambia = "@LeonidasEsteban"
-
-function cambiarNombre(nuevoNombre) {
-  cambia = nuevoNombre
-}
-
 
 fetch('https://randomuser.me/api/')
     .then(function(response){
@@ -20,10 +11,52 @@ fetch('https://randomuser.me/api/')
     });
 
 (async function load(){
+
+
+    //reto
+
+    const FRIEND_API= 'https://randomuser.me/api/?inc=name,picture&results=10&noinfo';
+     async function getFriend(url){
+         const response= await fetch(url)
+         const user = await response.json();
+         return user;
+     }
+     //const proff = await getFriend(`${FRIEND_API}`);
+     //debugger
+     function friendTemplate(person){
+        return(`<li class="playlistFriends-item">
+        <a href="#">
+          <img src="${person.picture.thumbnail}" alt="echame la culpa" />
+          <span>
+            ${person.name.first} ${person.name.last}
+          </span>
+        </a>
+      </li>`)
+     }
+
+     function renderFriendList(list, $container){
+        list.forEach((person)=>{
+            const HTMLString = friendTemplate(person);
+            const friendElement= createTemplate(HTMLString);
+            $container.append(friendElement);
+            const image = friendElement.querySelector('img');
+            image.addEventListener('load', (event)=> {
+                event.srcElement.classList.add('fadeIn');
+            })
+        })
+    }
+
+    const friendList= await getFriend(`${FRIEND_API}`);
+    const $friendsContainer = document.querySelector('.playlistFriends');
+    renderFriendList(friendList.results, $friendsContainer);
     async function getData(url){
-        const response = await fetch(url);
-        const data= await response.json();
-        return data;
+            const response = await fetch(url);
+            const data= await response.json();
+            if(data.data.movie_count > 0){
+                return data;
+        }
+        throw new Error('No se encotro ningun resultado');
+
     }
 
     const $form = document.querySelector('form');
@@ -65,14 +98,20 @@ fetch('https://randomuser.me/api/')
         $featuringContainer.append($loader);
 
         const data= new FormData($form);
-        const {
-            //data: 'otro nombre';
-            data: {
-                movies: pelis
-            }
-        }= await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
-        const HTMLString= featuringTemplate(pelis[0]);
-        $featuringContainer.innerHTML=HTMLString;
+        try{
+            const {
+                data: {
+                    movies: pelis
+                }
+            }= await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
+            const HTMLString= featuringTemplate(pelis[0]);
+            $featuringContainer.innerHTML=HTMLString;
+        }catch(error){
+            alert(error.message);
+            $loader.remove();
+            $home.classList.remove('search-active');
+        }
+
     })
 
     function videoItemTemplate(movie, category){
@@ -109,7 +148,7 @@ fetch('https://randomuser.me/api/')
         $container.append(movieElement);
         const image = movieElement.querySelector('img');
         image.addEventListener('load', (event)=> {
-            //movieElement.classList.add('fadeIn');
+
             event.srcElement.classList.add('fadeIn');
         })
 
@@ -143,21 +182,19 @@ fetch('https://randomuser.me/api/')
         return list.find(movie => movie.id === parseInt(id,10));
     }
     function findMovie(id, category){
-        /*actionList.find((movie)=>{
-            return movie.id === parseInt(id, 10);
-        })*/
+
         switch(category){
             case 'action': {
                 return findById(actionList, id)
-                //actionList.find(movie => movie.id === parseInt(id,10));
+
             }
             case 'drama': {
                 return findById(dramaList, id)
-               // dramaList.find(movie => movie.id === parseInt(id,10));
+
             }
             case 'animation': {
                 return findById(animationList, id)
-                //animationList.find(movie => movie.id === parseInt(id,10));
+
             }
         }
         actionList.find(movie => movie.id === parseInt(id,10)); //el 10 es la base del numero en este caso decimal
