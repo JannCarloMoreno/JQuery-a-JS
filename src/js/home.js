@@ -74,7 +74,7 @@ fetch('https://randomuser.me/api/')
         const HTMLString= featuringTemplate(pelis[0]);
         $featuringContainer.innerHTML=HTMLString;
     })
-    
+
     function videoItemTemplate(movie, category){
         return (
             `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
@@ -117,7 +117,7 @@ fetch('https://randomuser.me/api/')
     } )
     }
     const {data:{movies: actionList}}= await getData(`${BASE_API}list_movies.json?genre=action`);
-    
+
     const $actionContainer = document.querySelector('#action');
     renderMovieList(actionList, $actionContainer, 'action');
 
