@@ -74,9 +74,9 @@ fetch('https://randomuser.me/api/')
         const HTMLString= featuringTemplate(pelis[0]);
         $featuringContainer.innerHTML=HTMLString;
     })
-    const actionList = await getData(`${BASE_API}list_movies.json?genre=action`);
-    const dramaList= await getData(`${BASE_API}list_movies.json?genre=drama`);
-    const animationList= await getData(`${BASE_API}list_movies.json?genre=animation`)
+    const {data:{movies: actionList}}= await getData(`${BASE_API}list_movies.json?genre=action`);
+    const {data:{movies: dramaList}}= await getData(`${BASE_API}list_movies.json?genre=drama`);
+    const {data:{movies: animationList}}= await getData(`${BASE_API}list_movies.json?genre=animation`)
 
     function videoItemTemplate(movie, category){
         return (
@@ -118,15 +118,15 @@ fetch('https://randomuser.me/api/')
 
     const $actionContainer = document.querySelector('#action');
 
-    renderMovieList(actionList.data.movies, $actionContainer, 'action');
+    renderMovieList(actionList, $actionContainer, 'action');
 
     const $dramaContainer = document.querySelector('#drama');
 
-    renderMovieList(dramaList.data.movies, $dramaContainer, 'drama');
+    renderMovieList(dramaList, $dramaContainer, 'drama');
 
     const $animationContainer = document.querySelector('#animation');
 
-    renderMovieList(animationList.data.movies, $animationContainer, 'animation');
+    renderMovieList(animationList, $animationContainer, 'animation');
 
 
 
@@ -142,14 +142,40 @@ fetch('https://randomuser.me/api/')
     const $modalImage = $modal.querySelector('img');
     const $modalDescription = $modal.querySelector('p');
 
-
+    function findById(list, id){
+        return list.find(movie => movie.id === parseInt(id,10));
+    }
+    function findMovie(id, category){
+        /*actionList.find((movie)=>{
+            return movie.id === parseInt(id, 10);
+        })*/
+        switch(category){
+            case 'action': {
+                return findById(actionList, id)
+                //actionList.find(movie => movie.id === parseInt(id,10));
+            }
+            case 'drama': {
+                return findById(dramaList, id)
+               // dramaList.find(movie => movie.id === parseInt(id,10));
+            }
+            case 'animation': {
+                return findById(animationList, id)
+                //animationList.find(movie => movie.id === parseInt(id,10));
+            }
+        }
+        actionList.find(movie => movie.id === parseInt(id,10)); //el 10 es la base del numero en este caso decimal
+    }
     function showModal($element){
 
         $overlay.classList.add('active');
         $modal.style.animation= 'modalIn .8s forwards';
         const id= parseInt($element.dataset.id);
         const category= $element.dataset.category;
+        const data= findMovie(id,category);
         //element.getAttribute('data-id') la otra forma de hacerlo.
+        $modalTitle.textContent= data.title;
+        $modalImage.setAttribute('src', data.medium_cover_image);
+        $modalDescription.textContent= data.description_full
     }
     function hideModal(){
         $overlay.classList.remove('active');
